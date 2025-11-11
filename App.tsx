@@ -3,11 +3,12 @@ import { Header } from './components/Header';
 import { PromptControls } from './components/PromptControls';
 import { ArtDisplay } from './components/ArtDisplay';
 import { Loader } from './components/Loader';
-import { GeneratedArt } from './types';
+import { GeneratedArt, ArtStyle, artStyles } from './types';
 import { generateImageFromPrompt, generateArtDescription } from './services/geminiService';
 
 export default function App() {
   const [prompt, setPrompt] = useState<string>('');
+  const [style, setStyle] = useState<ArtStyle>(artStyles[0]); // Default to 'None'
   const [generatedArt, setGeneratedArt] = useState<GeneratedArt | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,16 +21,21 @@ export default function App() {
     setError(null);
 
     try {
-      // Step 1: Generate the image from the prompt
-      const generatedImageBase64 = await generateImageFromPrompt(prompt);
+      // Step 1: Combine prompt and style for a more descriptive final prompt
+      const finalPrompt = style !== 'None' 
+        ? `${prompt.trim()}, in the style of ${style}` 
+        : prompt.trim();
+
+      // Step 2: Generate the image from the final prompt
+      const generatedImageBase64 = await generateImageFromPrompt(finalPrompt);
       if (!generatedImageBase64) {
         throw new Error("Image generation failed. The model did not return an image.");
       }
       
       const generatedImageMimeType = 'image/png'; // Gemini Flash Image model generally returns PNG
 
-      // Step 2: Generate a description for the new image
-      const { title, description } = await generateArtDescription(generatedImageBase64, generatedImageMimeType, prompt);
+      // Step 3: Generate a description for the new image using the final prompt for context
+      const { title, description } = await generateArtDescription(generatedImageBase64, generatedImageMimeType, finalPrompt);
 
       setGeneratedArt({
         image: `data:${generatedImageMimeType};base64,${generatedImageBase64}`,
@@ -44,7 +50,7 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  }, [prompt, isLoading]);
+  }, [prompt, style, isLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-indigo-900/50 flex flex-col p-4 sm:p-6 lg:p-8">
@@ -55,6 +61,8 @@ export default function App() {
           <PromptControls
             prompt={prompt}
             setPrompt={setPrompt}
+            style={style}
+            setStyle={setStyle}
             onGenerate={handleGenerate}
             isLoading={isLoading}
           />

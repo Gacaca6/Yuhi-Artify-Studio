@@ -26,23 +26,24 @@ export const SparklesIcon: React.FC<IconProps> = (props) => (
   </svg>
 );
 
+// FIX: Add missing UploadCloudIcon component.
 export const UploadCloudIcon: React.FC<IconProps> = (props) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-    <path d="M12 12v9" />
-    <path d="m16 16-4-4-4 4" />
-  </svg>
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2.4-3-4.1-5.6-4.1-1.2 0-2.3.5-3.1 1.4-1.2-.8-2.7-1.3-4.2-1.3-3.3 0-6 2.7-6 6 0 1.4.5 2.8 1.4 3.9" />
+      <path d="M12 12v9" />
+      <path d="m16 16-4-4-4 4" />
+    </svg>
 );
 
 export const ImageIcon: React.FC<IconProps> = (props) => (

@@ -10,27 +10,23 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Replaced class property state initialization with initialization in the constructor. This standard React pattern is more robust across different build toolchains and can resolve obscure typing errors related to `this.props`.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-    };
-  }
+  // FIX: Switched to class property for state initialization.
+  // This resolves errors where `this.state` and `this.props` were not being recognized.
+  // This is a common and robust pattern for React class components with TypeScript.
+  state: State = {
+    hasError: false,
+  };
 
-  // FIX: Removed `public` access modifier.
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  // FIX: Removed `public` access modifier.
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can also log the error to an error reporting service
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // FIX: Removed `public` access modifier.
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI

@@ -1,0 +1,5 @@
+{
+  "name": "Yuhi Artify Studio",
+  "description": "An artistic gallery where you describe the art you envision, and Gemini creates it, complete with a title and description. A beautiful UI tailored for artists.",
+  "requestFramePermissions": []
+}
